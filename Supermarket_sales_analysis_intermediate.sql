@@ -119,75 +119,61 @@ select product_id, product_name,
 category, sub_category from raw_supermarket_sales;
 
 
-
--- Basket analysis for shared sub-categories in the same orders
-select s1.sub_category `Product (a)`, s2.sub_category `Product (b)`,
-		count(distinct s1.order_id) `Times bought together` 
-		from (select  
-			s.order_id, p.sub_category 
-			from sales s 
-			join products p
-			on p.product_id = s.product_id) s1
-			join (select  
-			s.order_id, p.sub_category 
-			from sales s  
-			join products p 
-			on p.product_id = s.product_id) s2 
-			on s1.order_id = s2.order_id  
-			and s1.sub_category < s2.sub_category 
-	group by 1,2 
-	order by 3 desc ;
-			
-		
--- Shipping performance: computation of the average shipping time for each city
- -- From the worst to the best performance
-select s.city City, avg(datediff(o.ship_date, o.order_date)) `Average shipping days`
-		from sales s 
-		join orders o on s.order_id = o.order_id
-		group by City
-		order by 2 desc;
-
--- Discount vs Profit analysis
--- Average profit by discount percentage
+/* Assigning a score to each raw RFM value 
+ * Each score represents a quintile */
+WITH RFM_Calculated AS (
+    SELECT 
+        s.customer_id,
+        DATEDIFF((SELECT MAX(order_date) FROM orders), MAX(o.order_date)) AS recency,
+        COUNT(DISTINCT s.order_id) AS frequency,
+        SUM(s.sales) AS monetary
+    FROM sales s
+    JOIN orders o ON s.order_id = o.order_id AND s.product_id = o.product_id
+    GROUP BY s.customer_id
+),
+RFM_Scores AS (
+    SELECT *,
+        NTILE(5) OVER (ORDER BY recency DESC) AS r_score,
+        NTILE(5) OVER (ORDER BY frequency ASC) AS f_score,
+        NTILE(5) OVER (ORDER BY monetary ASC) AS m_score
+    FROM RFM_Calculated
+)
 SELECT 
-    discount AS 'Discount (%)',
-    COUNT(*) AS 'Number of sales',
-    ROUND(AVG(sales), 2) AS 'Average sale amount ($)',
-    ROUND(AVG(profit), 2) AS 'Average profit ($)',
-    ROUND(SUM(profit), 2) AS 'Total profit ($)',
-    ROUND((SUM(profit) / SUM(sales)) * 100, 2) AS 'Margin (%)'
-FROM sales
-GROUP BY discount
-ORDER BY discount ASC;
+    customer_id,
+    recency 'Recency value', frequency 'Frequency value', monetary 'Monetary value',
+    r_score 'Recency score', f_score 'Frequency score', m_score 'Monetary score',
+    (r_score + f_score + m_score) AS 'RFM total score'
+FROM RFM_Scores
+order by 8 desc;
 
 
--- Discount and profit by category
+
+
+-- Pareto Analysis
+WITH Customer_Profit AS (
+    SELECT 
+        customer_id,
+        SUM(profit) AS total_customer_profit
+    FROM sales
+    GROUP BY customer_id
+	HAVING SUM(profit) > 0
+),
+Cumulative_Analysis AS (
+    SELECT 
+        customer_id,
+        total_customer_profit,
+        SUM(total_customer_profit) OVER (ORDER BY total_customer_profit DESC) AS cumulative_profit,
+        SUM(total_customer_profit) OVER () AS global_total_profit,
+        ROW_NUMBER() OVER (ORDER BY total_customer_profit DESC) AS customer_rank,
+        COUNT(*) OVER () AS total_customer_count
+    FROM Customer_Profit
+)
 SELECT 
-    p.category AS 'Category',
-    s.discount AS 'Discount',
-    ROUND(AVG(s.profit), 2) AS 'Average profit',
-    CASE 
-        WHEN AVG(s.profit) > 0 THEN 'Positive'
-        ELSE 'Negative'
-    END AS 'Profitability status'
-FROM sales s
-JOIN products p ON s.product_id = p.product_id
-GROUP BY 1,2
-order by 3 desc;
-
--- Discount and profit by sub-category
-SELECT 
-    p.sub_category AS 'Category',
-    s.discount AS 'Discount',
-    ROUND(AVG(s.profit), 2) AS 'Average profit',
-    CASE 
-        WHEN AVG(s.profit) > 0 THEN 'Positive'
-        ELSE 'Negative'
-    END AS 'Profitability status'
-FROM sales s
-JOIN products p ON s.product_id = p.product_id
-GROUP BY 1,2
-ORDER BY 3 desc;
-
+    customer_id,
+    ROUND(total_customer_profit, 2) AS profit,
+    ROUND((cumulative_profit / global_total_profit) * 100, 2) AS cumulative_percentage,
+    ROUND((customer_rank / total_customer_count) * 100, 2) AS customer_percentage
+FROM Cumulative_Analysis
+ORDER BY total_customer_profit DESC;
 
 
