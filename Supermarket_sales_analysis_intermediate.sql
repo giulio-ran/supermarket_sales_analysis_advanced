@@ -28,7 +28,7 @@ CREATE TABLE raw_supermarket_sales (
 );
 
 
-load data infile "C:/ProgramData/MySQL/MySQL Server 9.5/Uploads/supermarket_sales_converted.csv"
+load data infile "your_path/supermarket_sales.csv"
 into table raw_supermarket_sales 
 fields terminated by ','
 enclosed by '"'
@@ -175,5 +175,6 @@ SELECT
     ROUND((customer_rank / total_customer_count) * 100, 2) AS customer_percentage
 FROM Cumulative_Analysis
 ORDER BY total_customer_profit DESC;
+
 
 
