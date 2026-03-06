@@ -6,7 +6,7 @@
 
 ## Abstract and research questions
 
-This is the second part of the study 'Supermarket Sales Analysis SQL', in which I focused on more advanced techniques to identify the main criticalities in the company's business strategy. First off, I implemented a query to answer the questions: how attraqctive has the company been for new customers trhoughout the years? What is the average time for a new customer to place a second order? What is the percentage of customers who actually place a second order? What was the entity of improvement in the latter metric (if any)? I answer these question through the Customer Retention Analysis
+This is the second part of the study 'Supermarket Sales Analysis SQL', in which I focused on more advanced techniques to identify the main criticalities in the company's business strategy. First off, I implemented a query to answer the questions: how attraqctive has the company been for new customers trhoughout the years? What is the average time for a new customer to place a second order? What is the percentage of customers who actually place a second order? What was the entity of improvement in the latter metric (if any)? I answered these questions through the Customer Retention Analysis, which highlighted a descreasing tendency for the newly acired customers throughout years, and an increasing trend for the 'Average days to second order' value. This pattern describes probably a descresed quality of advertising campaigns throughout the years, while a constant improvement of product (and/or shipping/customer care) quality. 
 
 ### 3. Advanced-level business analysis
 In this section, I carried out a more advanced analysis, emploing the following techniques:
