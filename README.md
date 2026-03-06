@@ -6,11 +6,11 @@
 
 ## Abstract and research questions
 
-
+This is the second part of the study 'Supermarket Sales Analysis SQL', in which I focused on more advanced techniques to identify the main criticalities in the company's business strategy. First off, I implemented a query to answer the questions: how attraqctive has the company been for new customers trhoughout the years? What is the average time for a new customer to place a second order? What is the percentage of customers who actually place a second order? What was the entity of improvement in the latter metric (if any)? I answer these question through the Customer Retention Analysis
 
 ### 3. Advanced-level business analysis
 In this section, I carried out a more advanced analysis, emploing the following techniques:
-- **Customer Retention analysis**: It's a complex analysis that investigates how much a customer is 'loyal' to the company. It includes the calculation of the following metrics:
+- **Customer Retention Analysis**: It's a complex analysis that investigates how much a customer is 'loyal' to the company. It includes the calculation of the following metrics:
   1) 'Total acquired customers by year': it describes how many new customers were acquired for each year. It helps understand if, for example, the current sales volume is due to a good amount of 'loyal' customers, or just to a flow of new customers, maybe acquired by advertising campaigns.
   2) 'Average days to second order': it measures how many days, on average, a customer waits before placing a second order; it describes the risk of customers switching to a competitor and provides insights into the optimal timing for sending promotional emails.
   3) 'Retention rate': it is computed by the formula: $$\text{Retention Rate (\\%)} = \frac{\text{Customers with ≥ 2 orders}}{\text{Total Customers}} \times 100$$
