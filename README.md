@@ -51,10 +51,7 @@ LEFT JOIN SecondOrders s ON f.customer_id = s.customer_id
 GROUP BY 1
 order by 1;
 ```
-
-The year 2014 was the most profiquo in terms of new customers acquisition - 595 new customers -, followed by, 2015 (136), 2016 (51) and 2017 (11). The same tendency follows the variable 'average days to second order' which reflects the true acquisition potential of the company, since it is tightly linked to the quality of the product and customer satisfaction. 
-
-
+2014 was the most profitable year in terms of new customer acquisition, with 595 new customers, followed by a descending trend: 2015 (136), 2016 (51), and 2017 (11). An opposite trend is observed in the 'average days to second order' variable, which decreased constantly, from 292 days in 2014 to 105 in 2017 - the lower the values the better, since a low average means that a customer becomes loyal sooner. This measure reflects the true acquisition potential of the company, since it is tightly linked to product quality and customer satisfaction. Retention rates remain more or less constant, except for 2017, where there is a sudden drop. Taken together, these data suggest that the general attractiveness of the company went down throughout the years, attracting fewer and fewer first-time customers, whereas the product quality improved — confirmed also by the constant improvement in 'first/second order timespan'. Effective business advice would be to strengthen advertising campaigns to attract new customers, perhaps in areas where sales volumes are modest.
 
 - **RFM analysis (Recency, Frequency, Monetary)**: here, analyze each customer individualy, and the metrics are defined as follows:
   1) Recency value = last order within the dataset - last order of the customer. It measures how much time passed from the last bought (the less the better).
