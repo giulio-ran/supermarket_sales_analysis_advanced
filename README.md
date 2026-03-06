@@ -1,10 +1,20 @@
+# # Supermarket Sales Analysis SQL Project
+
+- **Level**: Advanced
+- **Dataset**: Supermarket_sales
+- **Language**: SQL
+
+## Abstract and research questions
+
+
+
 ### 3. Advanced-level business analysis
 In this section, I carried out a more advanced analysis, emploing the following techniques:
 - **Customer Retention analysis**: It's a complex analysis that investigates how much a customer is 'loyal' to the company. It includes the calculation of the following metrics:
   1) 'Total acquired customers by year': it describes how many new customers were acquired for each year. It helps understand if, for example, the current sales volume is due to a good amount of 'loyal' customers, or just to a flow of new customers, maybe acquired by advertising campaigns.
   2) 'Average days to second order': it measures how many days, on average, a customer waits before placing a second order; it describes the risk of customers switching to a competitor and provides insights into the optimal timing for sending promotional emails.
   3) 'Retention rate': it is computed by the formula: $$\text{Retention Rate (\\%)} = \frac{\text{Customers with ≥ 2 orders}}{\text{Total Customers}} \times 100$$
-  4) 'Annual improvement': computed by the formula $$\text{Annual Improvement(\\%)}  = \frac{\text{AvgDays (t-1)} - \text{AvgDays (t)}}{\text{AvgDays (t-1)}} \times 100$$ where AvgDays (t-1) indicates the average shipping performance of the previous year, whereas AvgDays (t-1) the one of the given year. It is a metric that analyze the relative improvement, year by year, in shipping performance. I is a useful complementary information, which cuold be easily paired with the customer retention trends, to infer a causal effect.
+  4) 'Annual improvement': computed by the formula $$\text{Annual Improvement(\\%)}  = \frac{\text{AvgDays (t-1)} - \text{AvgDays (t)}}{\text{AvgDays (t-1)}} \times 100$$ where AvgDays (t-1) represents the average shipping performance of the previous year, and AvgDays(t) represents that of the current year. This metric analyzes the year-over-year relative improvement in shipping performance. It provides useful complementary information that, when paired with customer retention trends, can help infer a causal effect.
 
 ```sql
 -- Customer Retention analysis
@@ -41,6 +51,10 @@ LEFT JOIN SecondOrders s ON f.customer_id = s.customer_id
 GROUP BY 1
 order by 1;
 ```
+
+The year 2014 was the most profiquo in terms of new customers acquisition - 595 new customers -, followed by, 2015 (136), 2016 (51) and 2017 (11). The same tendency follows the variable 'average days to second order' which reflects the true acquisition potential of the company, since it is tightly linked to the quality of the product and customer satisfaction. 
+
+
 
 - **RFM analysis (Recency, Frequency, Monetary)**: here, analyze each customer individualy, and the metrics are defined as follows:
   1) Recency value = last order within the dataset - last order of the customer. It measures how much time passed from the last bought (the less the better).
